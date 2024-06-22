@@ -1,6 +1,6 @@
 [package]
 cairo-version = "2.6.3"
-name = "dojo_starter"
+name = "threed_2048"
 version = "0.7.0"
 
 [cairo]

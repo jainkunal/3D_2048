@@ -1002,7 +1002,7 @@
     "address": "0xb4079627ebab1cd3cf9fd075dda1ad2454a7a448bf659591f259efa2519b18",
     "transaction_hash": "0x3a729aa09b4ad351fbc724f94c6d599037a53d7d9b5a182097a60fb09d0486c",
     "block_number": 9,
-    "seed": "dojo_starter",
+    "seed": "threed_2048",
     "metadata": {
       "profile_name": "dev",
       "rpc_url": "http://localhost:5050/"
@@ -1081,11 +1081,11 @@
         {
           "type": "impl",
           "name": "ActionsImpl",
-          "interface_name": "dojo_starter::systems::actions::IActions"
+          "interface_name": "threed_2048::systems::actions::IActions"
         },
         {
           "type": "enum",
-          "name": "dojo_starter::models::moves::Direction",
+          "name": "threed_2048::models::moves::Direction",
           "variants": [
             {
               "name": "None",
@@ -1111,7 +1111,7 @@
         },
         {
           "type": "interface",
-          "name": "dojo_starter::systems::actions::IActions",
+          "name": "threed_2048::systems::actions::IActions",
           "items": [
             {
               "type": "function",
@@ -1126,7 +1126,7 @@
               "inputs": [
                 {
                   "name": "direction",
-                  "type": "dojo_starter::models::moves::Direction"
+                  "type": "threed_2048::models::moves::Direction"
                 }
               ],
               "outputs": [],
@@ -1137,11 +1137,11 @@
         {
           "type": "impl",
           "name": "IDojoInitImpl",
-          "interface_name": "dojo_starter::systems::actions::actions::IDojoInit"
+          "interface_name": "threed_2048::systems::actions::actions::IDojoInit"
         },
         {
           "type": "interface",
-          "name": "dojo_starter::systems::actions::actions::IDojoInit",
+          "name": "threed_2048::systems::actions::actions::IDojoInit",
           "items": [
             {
               "type": "function",
@@ -1201,7 +1201,7 @@
         },
         {
           "type": "event",
-          "name": "dojo_starter::systems::actions::actions::Event",
+          "name": "threed_2048::systems::actions::actions::Event",
           "kind": "enum",
           "variants": [
             {
@@ -1220,7 +1220,7 @@
       ],
       "computed": [],
       "init_calldata": [],
-      "name": "dojo_starter::systems::actions::actions"
+      "name": "threed_2048::systems::actions::actions"
     }
   ],
   "models": [
@@ -1562,11 +1562,11 @@
         {
           "type": "impl",
           "name": "directions_availableImpl",
-          "interface_name": "dojo_starter::models::moves::Idirections_available"
+          "interface_name": "threed_2048::models::moves::Idirections_available"
         },
         {
           "type": "enum",
-          "name": "dojo_starter::models::moves::Direction",
+          "name": "threed_2048::models::moves::Direction",
           "variants": [
             {
               "name": "None",
@@ -1592,7 +1592,7 @@
         },
         {
           "type": "struct",
-          "name": "dojo_starter::models::moves::DirectionsAvailable",
+          "name": "threed_2048::models::moves::DirectionsAvailable",
           "members": [
             {
               "name": "player",
@@ -1600,13 +1600,13 @@
             },
             {
               "name": "directions",
-              "type": "core::array::Array::<dojo_starter::models::moves::Direction>"
+              "type": "core::array::Array::<threed_2048::models::moves::Direction>"
             }
           ]
         },
         {
           "type": "interface",
-          "name": "dojo_starter::models::moves::Idirections_available",
+          "name": "threed_2048::models::moves::Idirections_available",
           "items": [
             {
               "type": "function",
@@ -1614,7 +1614,7 @@
               "inputs": [
                 {
                   "name": "model",
-                  "type": "dojo_starter::models::moves::DirectionsAvailable"
+                  "type": "threed_2048::models::moves::DirectionsAvailable"
                 }
               ],
               "outputs": [],
@@ -1624,12 +1624,12 @@
         },
         {
           "type": "event",
-          "name": "dojo_starter::models::moves::directions_available::Event",
+          "name": "threed_2048::models::moves::directions_available::Event",
           "kind": "enum",
           "variants": []
         }
       ],
-      "name": "dojo_starter::models::moves::directions_available"
+      "name": "threed_2048::models::moves::directions_available"
     },
     {
       "kind": "DojoModel",
@@ -1979,11 +1979,11 @@
         {
           "type": "impl",
           "name": "movesImpl",
-          "interface_name": "dojo_starter::models::moves::Imoves"
+          "interface_name": "threed_2048::models::moves::Imoves"
         },
         {
           "type": "enum",
-          "name": "dojo_starter::models::moves::Direction",
+          "name": "threed_2048::models::moves::Direction",
           "variants": [
             {
               "name": "None",
@@ -2023,7 +2023,7 @@
         },
         {
           "type": "struct",
-          "name": "dojo_starter::models::moves::Moves",
+          "name": "threed_2048::models::moves::Moves",
           "members": [
             {
               "name": "player",
@@ -2035,7 +2035,7 @@
             },
             {
               "name": "last_direction",
-              "type": "dojo_starter::models::moves::Direction"
+              "type": "threed_2048::models::moves::Direction"
             },
             {
               "name": "can_move",
@@ -2045,7 +2045,7 @@
         },
         {
           "type": "interface",
-          "name": "dojo_starter::models::moves::Imoves",
+          "name": "threed_2048::models::moves::Imoves",
           "items": [
             {
               "type": "function",
@@ -2053,7 +2053,7 @@
               "inputs": [
                 {
                   "name": "model",
-                  "type": "dojo_starter::models::moves::Moves"
+                  "type": "threed_2048::models::moves::Moves"
                 }
               ],
               "outputs": [],
@@ -2063,12 +2063,12 @@
         },
         {
           "type": "event",
-          "name": "dojo_starter::models::moves::moves::Event",
+          "name": "threed_2048::models::moves::moves::Event",
           "kind": "enum",
           "variants": []
         }
       ],
-      "name": "dojo_starter::models::moves::moves"
+      "name": "threed_2048::models::moves::moves"
     },
     {
       "kind": "DojoModel",
@@ -2408,11 +2408,11 @@
         {
           "type": "impl",
           "name": "positionImpl",
-          "interface_name": "dojo_starter::models::position::Iposition"
+          "interface_name": "threed_2048::models::position::Iposition"
         },
         {
           "type": "struct",
-          "name": "dojo_starter::models::position::Vec2",
+          "name": "threed_2048::models::position::Vec2",
           "members": [
             {
               "name": "x",
@@ -2426,7 +2426,7 @@
         },
         {
           "type": "struct",
-          "name": "dojo_starter::models::position::Position",
+          "name": "threed_2048::models::position::Position",
           "members": [
             {
               "name": "player",
@@ -2434,13 +2434,13 @@
             },
             {
               "name": "vec",
-              "type": "dojo_starter::models::position::Vec2"
+              "type": "threed_2048::models::position::Vec2"
             }
           ]
         },
         {
           "type": "interface",
-          "name": "dojo_starter::models::position::Iposition",
+          "name": "threed_2048::models::position::Iposition",
           "items": [
             {
               "type": "function",
@@ -2448,7 +2448,7 @@
               "inputs": [
                 {
                   "name": "model",
-                  "type": "dojo_starter::models::position::Position"
+                  "type": "threed_2048::models::position::Position"
                 }
               ],
               "outputs": [],
@@ -2458,12 +2458,12 @@
         },
         {
           "type": "event",
-          "name": "dojo_starter::models::position::position::Event",
+          "name": "threed_2048::models::position::position::Event",
           "kind": "enum",
           "variants": []
         }
       ],
-      "name": "dojo_starter::models::position::position"
+      "name": "threed_2048::models::position::position"
     },
     {
       "kind": "DojoModel",
@@ -2803,11 +2803,11 @@
         {
           "type": "impl",
           "name": "movedImpl",
-          "interface_name": "dojo_starter::systems::actions::actions::Imoved"
+          "interface_name": "threed_2048::systems::actions::actions::Imoved"
         },
         {
           "type": "enum",
-          "name": "dojo_starter::models::moves::Direction",
+          "name": "threed_2048::models::moves::Direction",
           "variants": [
             {
               "name": "None",
@@ -2833,7 +2833,7 @@
         },
         {
           "type": "struct",
-          "name": "dojo_starter::systems::actions::actions::Moved",
+          "name": "threed_2048::systems::actions::actions::Moved",
           "members": [
             {
               "name": "player",
@@ -2841,13 +2841,13 @@
             },
             {
               "name": "direction",
-              "type": "dojo_starter::models::moves::Direction"
+              "type": "threed_2048::models::moves::Direction"
             }
           ]
         },
         {
           "type": "interface",
-          "name": "dojo_starter::systems::actions::actions::Imoved",
+          "name": "threed_2048::systems::actions::actions::Imoved",
           "items": [
             {
               "type": "function",
@@ -2855,7 +2855,7 @@
               "inputs": [
                 {
                   "name": "model",
-                  "type": "dojo_starter::systems::actions::actions::Moved"
+                  "type": "threed_2048::systems::actions::actions::Moved"
                 }
               ],
               "outputs": [],
@@ -2865,12 +2865,12 @@
         },
         {
           "type": "event",
-          "name": "dojo_starter::systems::actions::actions::moved::Event",
+          "name": "threed_2048::systems::actions::actions::moved::Event",
           "kind": "enum",
           "variants": []
         }
       ],
-      "name": "dojo_starter::systems::actions::actions::moved"
+      "name": "threed_2048::systems::actions::actions::moved"
     }
   ]
 }

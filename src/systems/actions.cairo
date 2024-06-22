@@ -1,5 +1,5 @@
-use dojo_starter::models::moves::Direction;
-use dojo_starter::models::position::Position;
+use threed_2048::models::moves::Direction;
+use threed_2048::models::position::Position;
 
 // define the interface
 #[dojo::interface]
@@ -13,7 +13,7 @@ trait IActions {
 mod actions {
     use super::{IActions, next_position};
     use starknet::{ContractAddress, get_caller_address};
-    use dojo_starter::models::{
+    use threed_2048::models::{
         position::{Position, Vec2}, moves::{Moves, Direction, DirectionsAvailable}
     };
 

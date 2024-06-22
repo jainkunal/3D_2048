@@ -56,11 +56,11 @@
   {
     "type": "impl",
     "name": "ActionsImpl",
-    "interface_name": "dojo_starter::systems::actions::IActions"
+    "interface_name": "threed_2048::systems::actions::IActions"
   },
   {
     "type": "enum",
-    "name": "dojo_starter::models::moves::Direction",
+    "name": "threed_2048::models::moves::Direction",
     "variants": [
       {
         "name": "None",
@@ -86,7 +86,7 @@
   },
   {
     "type": "interface",
-    "name": "dojo_starter::systems::actions::IActions",
+    "name": "threed_2048::systems::actions::IActions",
     "items": [
       {
         "type": "function",
@@ -101,7 +101,7 @@
         "inputs": [
           {
             "name": "direction",
-            "type": "dojo_starter::models::moves::Direction"
+            "type": "threed_2048::models::moves::Direction"
           }
         ],
         "outputs": [],
@@ -112,11 +112,11 @@
   {
     "type": "impl",
     "name": "IDojoInitImpl",
-    "interface_name": "dojo_starter::systems::actions::actions::IDojoInit"
+    "interface_name": "threed_2048::systems::actions::actions::IDojoInit"
   },
   {
     "type": "interface",
-    "name": "dojo_starter::systems::actions::actions::IDojoInit",
+    "name": "threed_2048::systems::actions::actions::IDojoInit",
     "items": [
       {
         "type": "function",
@@ -176,7 +176,7 @@
   },
   {
     "type": "event",
-    "name": "dojo_starter::systems::actions::actions::Event",
+    "name": "threed_2048::systems::actions::actions::Event",
     "kind": "enum",
     "variants": [
       {
