@@ -7,7 +7,7 @@ import { useElementStore } from "@/store";
 export const Players = (props: any) => {
     const {
         setup: {
-            clientComponents: { Position },
+            clientComponents: { Game },
             world,
         },
     } = useDojo();
@@ -16,7 +16,7 @@ export const Players = (props: any) => {
     const update_player = useElementStore((state) => state.update_player);
 
     useEffect(() => {
-        defineSystem(world, [Has(Position)], ({ value: [newValue] }) => {
+        defineSystem(world, [Has(Game)], ({ value: [newValue] }) => {
             update_player(newValue);
         });
     }, []);

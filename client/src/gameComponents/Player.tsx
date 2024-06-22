@@ -12,7 +12,7 @@ export const Player = (props: any) => {
     const {
         account: { account },
         setup: {
-            clientComponents: { Position },
+            clientComponents: { Game, Tile },
             systemCalls: { move },
         },
     } = useDojo();
@@ -30,17 +30,20 @@ export const Player = (props: any) => {
 
     // Retrieve local player
     const localPlayer = useComponentValue(
-        Position,
-        getEntityIdFromKeys([BigInt(account.address)])
+        Game,
+        getEntityIdFromKeys([BigInt(account.address), BigInt(1)])
     );
 
     const handleTileClick = (direction: Direction) => {
-        move(account, direction);
+        move(account, 1, direction);
     };
 
     const isLocalPlayer = localPlayer?.player == player.player;
 
-    const { vec } = player;
+    const vec = {
+        x: 1,
+        y: 1
+    }
     const color = isLocalPlayer ? "green" : "red";
 
     // Blue cell around player
@@ -150,39 +153,39 @@ export const Player = (props: any) => {
             {
                 // Add 4 cells around the local player
                 isLocalPlayer &&
-                    blueCellsAroundPlayer.map((cellInfo, k: number) => {
-                        return (
-                            <mesh
-                                key={k}
-                                receiveShadow
-                                onClick={() =>
-                                    handleTileClick(cellInfo.direction)
-                                }
-                                position={cellInfo.position}
-                                geometry={squareGeometry}
-                                material={
-                                    new THREE.MeshPhongMaterial({
-                                        color:
-                                            hoveredTile === cellInfo.direction
-                                                ? "lightblue"
-                                                : "blue",
-                                    })
-                                }
-                                onPointerEnter={(e) => {
-                                    // Stop propagation to avoid selecting other cells
-                                    // onPointerEnter does not stop at the first cell encountered by default
-                                    e.stopPropagation();
-                                    setHoveredTile(cellInfo.direction);
-                                }}
-                                onPointerLeave={(e) => {
-                                    // Stop propagation to avoid selecting other cells
-                                    // onPointerLeave does not stop at the first cell encountered by default
-                                    e.stopPropagation();
-                                    setHoveredTile(undefined);
-                                }}
-                            ></mesh>
-                        );
-                    })
+                blueCellsAroundPlayer.map((cellInfo, k: number) => {
+                    return (
+                        <mesh
+                            key={k}
+                            receiveShadow
+                            onClick={() =>
+                                handleTileClick(cellInfo.direction)
+                            }
+                            position={cellInfo.position}
+                            geometry={squareGeometry}
+                            material={
+                                new THREE.MeshPhongMaterial({
+                                    color:
+                                        hoveredTile === cellInfo.direction
+                                            ? "lightblue"
+                                            : "blue",
+                                })
+                            }
+                            onPointerEnter={(e) => {
+                                // Stop propagation to avoid selecting other cells
+                                // onPointerEnter does not stop at the first cell encountered by default
+                                e.stopPropagation();
+                                setHoveredTile(cellInfo.direction);
+                            }}
+                            onPointerLeave={(e) => {
+                                // Stop propagation to avoid selecting other cells
+                                // onPointerLeave does not stop at the first cell encountered by default
+                                e.stopPropagation();
+                                setHoveredTile(undefined);
+                            }}
+                        ></mesh>
+                    );
+                })
             }
         </>
     );
