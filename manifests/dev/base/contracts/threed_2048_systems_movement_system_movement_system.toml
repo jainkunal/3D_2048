@@ -1,0 +1,10 @@
+kind = "DojoContract"
+class_hash = "0x780051bac57ace4ffe5c0679a4df30a852e6032c5a0918d16d33b20ff9072e3"
+original_class_hash = "0x780051bac57ace4ffe5c0679a4df30a852e6032c5a0918d16d33b20ff9072e3"
+base_class_hash = "0x0"
+abi = "manifests/dev/abis/base/contracts/threed_2048_systems_movement_system_movement_system.json"
+reads = []
+writes = []
+computed = []
+init_calldata = []
+name = "threed_2048::systems::movement_system::movement_system"

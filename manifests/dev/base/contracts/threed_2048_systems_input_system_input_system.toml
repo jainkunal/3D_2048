@@ -1,0 +1,10 @@
+kind = "DojoContract"
+class_hash = "0x43a6cbc44e4af987cc7e8183e68b464ac75c0e8281154334747a210615f3ace"
+original_class_hash = "0x43a6cbc44e4af987cc7e8183e68b464ac75c0e8281154334747a210615f3ace"
+base_class_hash = "0x0"
+abi = "manifests/dev/abis/base/contracts/threed_2048_systems_input_system_input_system.json"
+reads = []
+writes = []
+computed = []
+init_calldata = []
+name = "threed_2048::systems::input_system::input_system"
