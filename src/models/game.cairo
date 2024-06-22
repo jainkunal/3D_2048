@@ -1,7 +1,10 @@
 use starknet::ContractAddress;
 
-#[derive(Model, Copy, Drop, Serde)]
+#[derive(Copy, Drop, Serde)]
+#[dojo::model]
 struct Game {
+    #[key]
+    player: ContractAddress,
     #[key]
     game_id: u32,
     game_mode: GameMode,
@@ -12,7 +15,7 @@ struct Game {
     state: u8, // 1: Playing, 2: Game Over, 3: Won
 }
 
-#[derive(Copy, Drop, Serde, PartialEq)]
+#[derive(Copy, Drop, Serde, Introspect, PartialEq)]
 enum GameMode {
     Single,
     AIMulti

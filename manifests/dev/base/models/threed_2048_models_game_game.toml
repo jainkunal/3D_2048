@@ -1,0 +1,45 @@
+kind = "DojoModel"
+class_hash = "0x44d225e79ccf70dd142920fd7bbbbd8afc88bf5709efc68127883e118b3a7ae"
+original_class_hash = "0x44d225e79ccf70dd142920fd7bbbbd8afc88bf5709efc68127883e118b3a7ae"
+abi = "manifests/dev/abis/base/models/threed_2048_models_game_game.json"
+name = "threed_2048::models::game::game"
+
+[[members]]
+name = "player"
+type = "ContractAddress"
+key = true
+
+[[members]]
+name = "game_id"
+type = "u32"
+key = true
+
+[[members]]
+name = "game_mode"
+type = "GameMode"
+key = false
+
+[[members]]
+name = "width"
+type = "u32"
+key = false
+
+[[members]]
+name = "height"
+type = "u32"
+key = false
+
+[[members]]
+name = "tile_count"
+type = "u32"
+key = false
+
+[[members]]
+name = "score"
+type = "u32"
+key = false
+
+[[members]]
+name = "state"
+type = "u8"
+key = false
