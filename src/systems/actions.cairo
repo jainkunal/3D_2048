@@ -47,7 +47,7 @@ mod actions {
                     game_mode: GameMode::Single,
                     width: 4,
                     height: 4,
-                    tile_count: 0,
+                    tile_count: 1,
                     score: 0,
                     state: 1
                 },
