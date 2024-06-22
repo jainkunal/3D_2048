@@ -1,0 +1,30 @@
+kind = "DojoModel"
+class_hash = "0x522647c4287815f666af32252dbee98816654f2ed86de42b16649345a6aa9b"
+original_class_hash = "0x522647c4287815f666af32252dbee98816654f2ed86de42b16649345a6aa9b"
+abi = "manifests/dev/abis/base/models/threed_2048_models_entity_position.json"
+name = "threed_2048::models::entity::position"
+
+[[members]]
+name = "game_id"
+type = "u32"
+key = true
+
+[[members]]
+name = "tile_id"
+type = "u32"
+key = true
+
+[[members]]
+name = "x"
+type = "u32"
+key = false
+
+[[members]]
+name = "y"
+type = "u32"
+key = false
+
+[[members]]
+name = "z"
+type = "u32"
+key = false

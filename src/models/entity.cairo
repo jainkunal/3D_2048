@@ -1,6 +1,7 @@
 use starknet::ContractAddress;
 
-#[derive(Model, Drop, Serde)]
+#[derive(Drop, Serde)]
+#[dojo::model]
 struct Position {
     #[key]
     game_id: u32,
@@ -11,7 +12,8 @@ struct Position {
     z: u32
 }
 
-#[derive(Model, Drop, Serde)]
+#[derive(Drop, Serde)]
+#[dojo::model]
 struct Value {
     #[key]
     game_id: u32,
@@ -20,7 +22,8 @@ struct Value {
     value: u32,
 }
 
-#[derive(Model, Drop, Serde)]
+#[derive(Drop, Serde)]
+#[dojo::model]
 struct Mergeable {
     #[key]
     game_id: u32,
@@ -29,7 +32,8 @@ struct Mergeable {
     can_merge: bool,
 }
 
-#[derive(Model, Drop, Serde)]
+#[derive(Drop, Serde)]
+#[dojo::model]
 struct Movable {
     #[key]
     game_id: u32,
