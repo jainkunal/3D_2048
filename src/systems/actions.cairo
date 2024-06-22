@@ -7,6 +7,7 @@ use threed_2048::utils::random::{Random, RandomImpl};
 // define the interface
 #[dojo::interface]
 trait IActions {
+    fn create_game(ref world: IWorldDispatcher) -> u32;
     fn move(ref world: IWorldDispatcher, game_id: u32, direction: Direction);
 }
 
@@ -16,6 +17,7 @@ mod actions {
     use super::{IActions, get_tile_at, get_spawn_tile_location_and_value};
     use starknet::{ContractAddress, get_caller_address};
     use threed_2048::models::moves::Direction;
+    use threed_2048::models::player::Player;
     use threed_2048::models::game::{Game, GameMode};
     use threed_2048::models::entity::{Position, Value, Mergeable};
 
@@ -30,6 +32,47 @@ mod actions {
 
     #[abi(embed_v0)]
     impl ActionsImpl of IActions<ContractState> {
+        fn create_game(ref world: IWorldDispatcher) -> u32 {
+            let player = get_caller_address();
+            let player_entity = get!(world, player, (Player));
+
+            let game_id = player_entity.last_game_id + 1;
+            let tile_count = 0;
+
+            set!(
+                world,
+                Game {
+                    player,
+                    game_id: player_entity.last_game_id + 1,
+                    game_mode: GameMode::Single,
+                    width: 4,
+                    height: 4,
+                    tile_count: 0,
+                    score: 0,
+                    state: 1
+                },
+            );
+
+            let r = get_spawn_tile_location_and_value(@world, game_id, tile_count, 4, 4);
+            let (spawn_x, spawn_y, spawn_value) = r.unwrap();
+            set!(world, (
+                Position {
+                    game_id,
+                    tile_id: tile_count,
+                    x: spawn_x,
+                    y: spawn_y,
+                    z: 0,
+                },
+                Value {
+                    game_id,
+                    tile_id: tile_count,
+                    value: spawn_value,
+                },
+            ));
+
+            game_id
+        }
+
         // Implementation of the move function for the ContractState struct.
         fn move(ref world: IWorldDispatcher, game_id: u32, direction: Direction) {
             // Get the address of the current caller, possibly the player's address.

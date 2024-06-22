@@ -5,8 +5,9 @@ use starknet::ContractAddress;
 struct Player {
     #[key]
     address: ContractAddress,
-    games_won: u256,
-    games_lost: u256
+    last_game_id: u32,
+    games_won: u32,
+    games_lost: u32
 }
 
 // The GamePlayer is the store for the state in each game
