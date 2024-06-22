@@ -180,6 +180,8 @@ mod actions {
                             } else {
                                 merged = false;
                             }
+
+                            x += 1;
                         };
 
                         y += 1;
@@ -240,6 +242,7 @@ fn get_tile_at(world: @IWorldDispatcher, game_id: u32, tile_count: u32, x: u32, 
         if position.x == x && position.y == y {
             break Option::Some(i);
         }
+        i += 1;
     };
     result
 }
@@ -313,12 +316,12 @@ fn find_empty_positions(world: @IWorldDispatcher, game_id: u32, tile_count: u32,
     
     let mut y = 0;
     loop {
-        if y == height {
+        if y >= height {
             break;
         }
         let mut x = 0;
         loop {
-            if x == width {
+            if x >= width {
                 break;
             }
             if get_tile_at(world, game_id, tile_count, x, y).is_none() {
