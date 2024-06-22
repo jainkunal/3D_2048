@@ -1,6 +1,7 @@
 use starknet::ContractAddress;
 
-#[derive(Model, Copy, Drop, Serde)]
+#[derive(Copy, Drop, Serde)]
+#[dojo::model]
 struct Player {
     #[key]
     address: ContractAddress,
@@ -9,30 +10,31 @@ struct Player {
 }
 
 // The GamePlayer is the store for the state in each game
-#[derive(Model, Copy, Drop, Serde, Debug)]
-struct GamePlayer {
-    #[key]
-    address: ContractAddress,
-    #[key]
-    game_id: u128,
-}
+// #[derive(Copy, Drop, Serde, Debug)]
+// #[dojo::model]
+// struct GamePlayer {
+//     #[key]
+//     address: ContractAddress,
+//     #[key]
+//     game_id: u128,
+// }
 
-trait GamePlayerTrait {
-    fn new(game_id: u128, address: ContractAddress) -> GamePlayer;
-    fn is_finished(self: GamePlayer) -> bool;
-}
+// trait GamePlayerTrait {
+//     fn new(game_id: u128, address: ContractAddress) -> GamePlayer;
+//     fn is_finished(self: GamePlayer) -> bool;
+// }
 
-impl GamePlayerImpl of GamePlayerTrait {
-    // logic to create the game player
-    fn new(game_id: u128, address: ContractAddress) -> GamePlayer {
-        let game_player = GamePlayer {
-            address: address,
-            game_id: game_id,
-        };
-        game_player
-    }
+// impl GamePlayerImpl of GamePlayerTrait {
+//     // logic to create the game player
+//     fn new(game_id: u128, address: ContractAddress) -> GamePlayer {
+//         let game_player = GamePlayer {
+//             address: address,
+//             game_id: game_id,
+//         };
+//         game_player
+//     }
 
-    fn is_finished(self: GamePlayer) -> bool {
-        false
-    }
-}
+//     fn is_finished(self: GamePlayer) -> bool {
+//         false
+//     }
+// }

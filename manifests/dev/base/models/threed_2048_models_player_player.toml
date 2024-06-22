@@ -1,0 +1,20 @@
+kind = "DojoModel"
+class_hash = "0x6cc58e95889f36686afdcf6ee4c88be6b1c678eea54a8aacf8d8a3b9fa4bd5b"
+original_class_hash = "0x6cc58e95889f36686afdcf6ee4c88be6b1c678eea54a8aacf8d8a3b9fa4bd5b"
+abi = "manifests/dev/abis/base/models/threed_2048_models_player_player.json"
+name = "threed_2048::models::player::player"
+
+[[members]]
+name = "address"
+type = "ContractAddress"
+key = true
+
+[[members]]
+name = "games_won"
+type = "u256"
+key = false
+
+[[members]]
+name = "games_lost"
+type = "u256"
+key = false
