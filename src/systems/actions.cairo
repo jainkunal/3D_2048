@@ -2,6 +2,7 @@ use threed_2048::models::moves::Direction;
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 use threed_2048::models::game::{Game, GameMode};
 use threed_2048::models::entity::{Position, Value, Mergeable};
+use threed_2048::utils::random::{Random, RandomImpl};
 
 // define the interface
 #[dojo::interface]
@@ -12,7 +13,7 @@ trait IActions {
 // dojo decorator
 #[dojo::contract]
 mod actions {
-    use super::{IActions, get_tile_at};
+    use super::{IActions, get_tile_at, get_spawn_tile_location_and_value};
     use starknet::{ContractAddress, get_caller_address};
     use threed_2048::models::moves::Direction;
     use threed_2048::models::game::{Game, GameMode};
@@ -149,6 +150,35 @@ mod actions {
                 Direction::None => {},
             }
 
+            let r = get_spawn_tile_location_and_value(@world, game_id, tile_count, game.height, game.width);
+            if r.is_some() {
+                let (spawn_x, spawn_y, spawn_value) = r.unwrap();
+                set!(world, (
+                    Position {
+                        game_id,
+                        tile_id: tile_count,
+                        x: spawn_x,
+                        y: spawn_y,
+                        z: 0,
+                    },
+                    Value {
+                        game_id,
+                        tile_id: tile_count,
+                        value: spawn_value,
+                    },
+                    Game {
+                        player,
+                        game_id,
+                        game_mode: game.game_mode,
+                        width: game.width,
+                        height: game.height,
+                        tile_count: tile_count + 1,
+                        score: game.score,
+                        state: game.state, // 1: Playing, 2: Game Over, 3: Won
+                    }
+                ))
+            }
+
             // Update the world state with the new moves data and position.
             // set!(world, (moves, next));
             // Emit an event to the world to notify about the player's move.
@@ -215,3 +245,45 @@ fn get_tile_at(world: @IWorldDispatcher, game_id: u32, tile_count: u32, x: u32, 
 //         )
 //     );
 // }
+
+
+fn get_spawn_tile_location_and_value(world: @IWorldDispatcher, game_id: u32, tile_count: u32, height: u32, width: u32) -> Option<(u32, u32, u32)> {
+    let empty_positions = find_empty_positions(world, game_id, tile_count, height, width);
+
+    if empty_positions.len() == 0 {
+        return Option::None;
+    }
+
+    let mut randomizer = RandomImpl::new();
+    let random_index = randomizer.between::<u128>(0, empty_positions.len().into());
+    let (x, y) = *empty_positions.at(random_index.try_into().unwrap());
+
+    let value_prob = randomizer.between::<u128>(0, 10_u128);
+    let value: u32 = if value_prob == 0 { 4 } else { 2 };
+
+    Option::Some((x, y, value))
+}
+
+
+fn find_empty_positions(world: @IWorldDispatcher, game_id: u32, tile_count: u32, height: u32, width: u32) -> Array<(u32, u32)> {
+    let mut empty_positions = ArrayTrait::new();
+    
+    let mut y = 0;
+    loop {
+        if y == height {
+            break;
+        }
+        let mut x = 0;
+        loop {
+            if x == width {
+                break;
+            }
+            if get_tile_at(world, game_id, tile_count, x, y).is_none() {
+                empty_positions.append((x, y));
+            }
+            x += 1;
+        };
+        y += 1;
+    };
+    empty_positions
+}

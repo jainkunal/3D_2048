@@ -11,6 +11,10 @@ mod models {
     mod moves;
 }
 
+mod utils {
+    mod random;
+}
+
 mod tests {
     mod test_world;
 }
