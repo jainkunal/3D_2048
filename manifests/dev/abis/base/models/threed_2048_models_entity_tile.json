@@ -319,19 +319,33 @@
   },
   {
     "type": "impl",
-    "name": "positionImpl",
-    "interface_name": "threed_2048::models::entity::Iposition"
+    "name": "tileImpl",
+    "interface_name": "threed_2048::models::entity::Itile"
+  },
+  {
+    "type": "enum",
+    "name": "core::bool",
+    "variants": [
+      {
+        "name": "False",
+        "type": "()"
+      },
+      {
+        "name": "True",
+        "type": "()"
+      }
+    ]
   },
   {
     "type": "struct",
-    "name": "threed_2048::models::entity::Position",
+    "name": "threed_2048::models::entity::Tile",
     "members": [
       {
-        "name": "game_id",
-        "type": "core::integer::u32"
+        "name": "player",
+        "type": "core::starknet::contract_address::ContractAddress"
       },
       {
-        "name": "tile_id",
+        "name": "game_id",
         "type": "core::integer::u32"
       },
       {
@@ -345,12 +359,20 @@
       {
         "name": "z",
         "type": "core::integer::u32"
+      },
+      {
+        "name": "is_alive",
+        "type": "core::bool"
+      },
+      {
+        "name": "value",
+        "type": "core::integer::u32"
       }
     ]
   },
   {
     "type": "interface",
-    "name": "threed_2048::models::entity::Iposition",
+    "name": "threed_2048::models::entity::Itile",
     "items": [
       {
         "type": "function",
@@ -358,7 +380,7 @@
         "inputs": [
           {
             "name": "model",
-            "type": "threed_2048::models::entity::Position"
+            "type": "threed_2048::models::entity::Tile"
           }
         ],
         "outputs": [],
@@ -368,7 +390,7 @@
   },
   {
     "type": "event",
-    "name": "threed_2048::models::entity::position::Event",
+    "name": "threed_2048::models::entity::tile::Event",
     "kind": "enum",
     "variants": []
   }

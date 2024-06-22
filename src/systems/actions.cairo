@@ -1,8 +1,9 @@
 use threed_2048::models::moves::Direction;
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 use threed_2048::models::game::{Game, GameMode};
-use threed_2048::models::entity::{Position, Value, Mergeable};
+use threed_2048::models::entity::{Tile};
 use threed_2048::utils::random::{Random, RandomImpl};
+use starknet::{ContractAddress, get_caller_address};
 
 // define the interface
 #[dojo::interface]
@@ -19,7 +20,7 @@ mod actions {
     use threed_2048::models::moves::Direction;
     use threed_2048::models::player::Player;
     use threed_2048::models::game::{Game, GameMode};
-    use threed_2048::models::entity::{Position, Value, Mergeable};
+    use threed_2048::models::entity::{Tile};
 
     #[derive(Copy, Drop, Serde)]
     #[dojo::model]
@@ -37,7 +38,6 @@ mod actions {
             let player_entity = get!(world, player, (Player));
 
             let game_id = player_entity.last_game_id + 1;
-            let tile_count = 0;
 
             set!(
                 world,
@@ -53,20 +53,17 @@ mod actions {
                 },
             );
 
-            let r = get_spawn_tile_location_and_value(@world, game_id, tile_count, 4, 4);
+            let r = get_spawn_tile_location_and_value(@world, player, game_id, 4, 4);
             let (spawn_x, spawn_y, spawn_value) = r.unwrap();
             set!(world, (
-                Position {
+                Tile {
+                    player,
                     game_id,
-                    tile_id: tile_count,
                     x: spawn_x,
                     y: spawn_y,
                     z: 0,
-                },
-                Value {
-                    game_id,
-                    tile_id: tile_count,
-                    value: spawn_value,
+                    is_alive: true,
+                    value: spawn_value
                 },
             ));
 
@@ -80,7 +77,7 @@ mod actions {
 
             // Retrieve the player's game.
             let mut game = get!(world, (player, game_id), (Game));
-            let tile_count = game.tile_count;
+            let mut tile_count = game.tile_count;
 
 
             // Code to process direction left
@@ -108,23 +105,25 @@ mod actions {
                             if (x >= game.width) {
                                 break;
                             }
-                            if let Option::Some(tile_id) = get_tile_at(@world, game_id, tile_count, x, y) {
+                            if let Option::Some(tile) = get_tile_at(@world, player, game_id, x, y) {
                                 let mut current_x = x;
-                                while current_x > 0 && get_tile_at(@world, game_id, tile_count, current_x - 1, y).is_none() {
+                                while current_x > 0 && get_tile_at(@world, player, game_id, current_x - 1, y).is_none() {
                                     // move_tile(ref world, game_id, tile_id, current_x - 1, y);
-                                    let mut position = get!(world, (game_id, tile_id), (Position));
                                     set!(
                                         world,
                                         (
-                                            Position {
+                                            Tile {
+                                                player,
                                                 game_id,
-                                                tile_id,
                                                 x: current_x - 1,
                                                 y: y,
-                                                z: position.z,
+                                                z: tile.z,
+                                                is_alive: tile.is_alive,
+                                                value: tile.value,
                                             }
                                         )
                                     );
+                                    delete!(world, (tile));
                                     current_x -= 1;
                                 }
                             }
@@ -137,13 +136,29 @@ mod actions {
                             if (x >= game.width) {
                                 break;
                             }
-                            if let Option::Some(current_id) = get_tile_at(@world, game_id, tile_count, x, y) {
-                                if let Option::Some(left_id) = get_tile_at(@world, game_id, tile_count, x - 1, y) {
-                                    let current_value = (get!(world, (game_id, current_id), (Value))).value;
-                                    let left_value = (get!(world, (game_id, left_id), (Value))).value;
+                            if let Option::Some(current_tile) = get_tile_at(@world, player, game_id, x, y) {
+                                if let Option::Some(left_tile) = get_tile_at(@world, player, game_id, x - 1, y) {
+                                    let current_value = current_tile.value;
+                                    let left_value = left_tile.value;
 
                                     if current_value == left_value && !merged {
                                         // Merge Tiles
+                                        set!(
+                                            world,
+                                            (
+                                                Tile {
+                                                    player,
+                                                    game_id,
+                                                    x: x - 1,
+                                                    y,
+                                                    z: left_tile.z,
+                                                    is_alive: true,
+                                                    value: left_tile.value * 2
+                                                }
+                                            )
+                                        );
+                                        delete!(world, (current_tile));
+                                        tile_count -= 1;
 
                                         // merged[x - 1] = true;
                                         merged = true;
@@ -154,20 +169,22 @@ mod actions {
                                                 break;
                                             }
                                             // Move Tile
-                                            if let Option::Some(tile_id) = get_tile_at(@world, game_id, tile_count, xx, y) {
-                                                let mut position = get!(world, (game_id, tile_id), (Position));
+                                            if let Option::Some(tile) = get_tile_at(@world, player, game_id, xx, y) {
                                                 set!(
                                                     world,
                                                     (
-                                                        Position {
+                                                        Tile {
+                                                            player,
                                                             game_id,
-                                                            tile_id,
                                                             x: xx - 1,
                                                             y: y,
-                                                            z: position.z,
+                                                            z: tile.z,
+                                                            is_alive: tile.is_alive,
+                                                            value: tile.value,
                                                         }
                                                     )
                                                 );
+                                                delete!(world, (tile));
                                             }
                                             xx += 1;
                                         };
@@ -195,21 +212,18 @@ mod actions {
                 Direction::None => {},
             }
 
-            let r = get_spawn_tile_location_and_value(@world, game_id, tile_count, game.height, game.width);
+            let r = get_spawn_tile_location_and_value(@world, player, game_id, game.height, game.width);
             if r.is_some() {
                 let (spawn_x, spawn_y, spawn_value) = r.unwrap();
                 set!(world, (
-                    Position {
+                    Tile {
+                        player,
                         game_id,
-                        tile_id: tile_count,
                         x: spawn_x,
                         y: spawn_y,
                         z: 0,
-                    },
-                    Value {
-                        game_id,
-                        tile_id: tile_count,
-                        value: spawn_value,
+                        is_alive: true,
+                        value: spawn_value
                     },
                     Game {
                         player,
@@ -232,19 +246,13 @@ mod actions {
     }
 }
 
-fn get_tile_at(world: @IWorldDispatcher, game_id: u32, tile_count: u32, x: u32, y: u32) -> Option<u32> {
-    let mut i: usize = 0;
-    let result = loop {
-        if (i >= tile_count) {
-            break Option::None;
-        }
-        let position = get!(*world, (game_id, i), (Position));
-        if position.x == x && position.y == y {
-            break Option::Some(i);
-        }
-        i += 1;
-    };
-    result
+fn get_tile_at(world: @IWorldDispatcher, player: ContractAddress, game_id: u32, x: u32, y: u32) -> Option<Tile> {
+    let result = get!(*world, (player, game_id, x, y), (Tile));
+    if result.is_alive {
+        Option::Some(result)
+    } else {
+        Option::None
+    }
 }
 
 // fn process_row(ref world: IWorldDispatcher, game_id: u32, tile_count: u32, y: u32, width: u32) {
@@ -253,9 +261,9 @@ fn get_tile_at(world: @IWorldDispatcher, game_id: u32, tile_count: u32, x: u32, 
 //         if (x >= width) {
 //             break;
 //         }
-//         if let Option::Some(tile_id) = get_tile_at(@world, game_id, tile_count, x, y) {
+//         if let Option::Some(tile_id) = get_tile_at(@world, player, game_id, x, y) {
 //             let mut current_x = x;
-//             while current_x > 0 && get_tile_at(@world, game_id, tile_count, current_x - 1, y).is_none() {
+//             while current_x > 0 && get_tile_at(@world, player, game_id, current_x - 1, y).is_none() {
 //                 // move_tile(ref world, game_id, tile_id, current_x - 1, y);
 //                 let mut position = get!(world, (game_id, tile_id), (Position));
 //                 set!(
@@ -293,8 +301,8 @@ fn get_tile_at(world: @IWorldDispatcher, game_id: u32, tile_count: u32, x: u32, 
 // }
 
 
-fn get_spawn_tile_location_and_value(world: @IWorldDispatcher, game_id: u32, tile_count: u32, height: u32, width: u32) -> Option<(u32, u32, u32)> {
-    let empty_positions = find_empty_positions(world, game_id, tile_count, height, width);
+fn get_spawn_tile_location_and_value(world: @IWorldDispatcher, player: ContractAddress, game_id: u32, height: u32, width: u32) -> Option<(u32, u32, u32)> {
+    let empty_positions = find_empty_positions(world, player, game_id, height, width);
 
     if empty_positions.len() == 0 {
         return Option::None;
@@ -311,7 +319,7 @@ fn get_spawn_tile_location_and_value(world: @IWorldDispatcher, game_id: u32, til
 }
 
 
-fn find_empty_positions(world: @IWorldDispatcher, game_id: u32, tile_count: u32, height: u32, width: u32) -> Array<(u32, u32)> {
+fn find_empty_positions(world: @IWorldDispatcher, player: ContractAddress, game_id: u32, height: u32, width: u32) -> Array<(u32, u32)> {
     let mut empty_positions = ArrayTrait::new();
     
     let mut y = 0;
@@ -324,7 +332,7 @@ fn find_empty_positions(world: @IWorldDispatcher, game_id: u32, tile_count: u32,
             if x >= width {
                 break;
             }
-            if get_tile_at(world, game_id, tile_count, x, y).is_none() {
+            if get_tile_at(world, player, game_id, x, y).is_none() {
                 empty_positions.append((x, y));
             }
             x += 1;
