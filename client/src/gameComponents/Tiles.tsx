@@ -51,7 +51,7 @@ export const Tiles = (props: any) => {
                 query: GET_TILES,
                 variables: { account: account.address, game_id: player?.last_game_id }
             });
-            console.log(data);
+            // console.log(data);
 
             const entities = [];
             for (const e of data.tileModels.edges) {

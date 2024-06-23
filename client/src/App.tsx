@@ -27,23 +27,29 @@ function App() {
             const gameId = player?.last_game_id ?? 1;
             switch (event.key) {
                 case 'ArrowUp':
+                    console.log("Playing Up");
                     actions.move({ account, gameId, direction: Direction.Up });
                     break;
                 case 'ArrowDown':
+                    console.log("Playing Down");
                     actions.move({ account, gameId, direction: Direction.Down });
                     break;
                 case 'ArrowLeft':
+                    console.log("Playing Left");
                     actions.move({ account, gameId, direction: Direction.Left });
                     break;
                 case 'ArrowRight':
+                    console.log("Playing Right");
                     actions.move({ account, gameId, direction: Direction.Right });
                     break;
                 case 'f':
                 case 'F':
+                    console.log("Playing Front");
                     actions.move({ account, gameId, direction: Direction.Front });
                     break;
                 case 'b':
                 case "B":
+                    console.log("Playing Back");
                     actions.move({ account, gameId, direction: Direction.Back });
                     break;
                 default:
