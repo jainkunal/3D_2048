@@ -22,8 +22,8 @@ name = "dojo::base::base"
 [[contracts]]
 kind = "DojoContract"
 address = "0x38d4ad3eb3c1fa648214f2cded353832b6ae8d051110e52fbf4451e4f5c3883"
-class_hash = "0x74ea101129d7be3b9955e084d649d6d842a201f944bd97414ed685832f49c57"
-original_class_hash = "0x74ea101129d7be3b9955e084d649d6d842a201f944bd97414ed685832f49c57"
+class_hash = "0x273186b172f1af836dac69688f7cb88b876c06db46cf01ed3d3f6aed3a244b6"
+original_class_hash = "0x273186b172f1af836dac69688f7cb88b876c06db46cf01ed3d3f6aed3a244b6"
 base_class_hash = "0x22f3e55b61d86c2ac5239fa3b3b8761f26b9a5c0b5f61ddbd5d756ced498b46"
 abi = "manifests/dev/abis/deployments/contracts/threed_2048_systems_actions_actions.json"
 reads = []
@@ -80,8 +80,8 @@ key = false
 
 [[models]]
 kind = "DojoModel"
-class_hash = "0x44d225e79ccf70dd142920fd7bbbbd8afc88bf5709efc68127883e118b3a7ae"
-original_class_hash = "0x44d225e79ccf70dd142920fd7bbbbd8afc88bf5709efc68127883e118b3a7ae"
+class_hash = "0x2cb5c2e63432bd1e828367a19c74ce51a4c5ab740f19e1241098615f30e2ff8"
+original_class_hash = "0x2cb5c2e63432bd1e828367a19c74ce51a4c5ab740f19e1241098615f30e2ff8"
 abi = "manifests/dev/abis/deployments/models/threed_2048_models_game_game.json"
 name = "threed_2048::models::game::game"
 
@@ -101,12 +101,7 @@ type = "GameMode"
 key = false
 
 [[models.members]]
-name = "width"
-type = "u32"
-key = false
-
-[[models.members]]
-name = "height"
+name = "box_size"
 type = "u32"
 key = false
 
