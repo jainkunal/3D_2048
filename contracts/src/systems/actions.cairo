@@ -88,17 +88,8 @@ mod actions {
                         if (y >= game.height) {
                             break;
                         }
-                        // process_row(ref world, game_id, tile_count, y, game.width);
 
                         let mut merged = false;
-                        // let mut x: usize = 0;
-                        // loop {
-                        //     if (x >= game.width) {
-                        //         break;
-                        //     }
-                        //     merged.append(false);
-                        //     x += 1;
-                        // };
 
                         let mut x: usize = 0;
                         loop {
@@ -278,52 +269,6 @@ fn get_tile_at(world: @IWorldDispatcher, player: ContractAddress, game_id: u32, 
     };
     result
 }
-
-// fn process_row(ref world: IWorldDispatcher, game_id: u32, tile_count: u32, y: u32, width: u32) {
-//     let mut x: usize = 0;
-//     loop {
-//         if (x >= width) {
-//             break;
-//         }
-//         if let Option::Some(tile_id) = get_tile_at(@world, player, game_id, x, y) {
-//             let mut current_x = x;
-//             while current_x > 0 && get_tile_at(@world, player, game_id, current_x - 1, y).is_none() {
-//                 // move_tile(ref world, game_id, tile_id, current_x - 1, y);
-//                 let mut position = get!(world, (game_id, tile_id), (Position));
-//                 set!(
-//                     world,
-//                     (
-//                         Position {
-//                             game_id,
-//                             tile_id,
-//                             x: current_x - 1,
-//                             y: y,
-//                             z: position.z,
-//                         }
-//                     )
-//                 );
-//             }
-//         }
-//         x += 1;
-//     };
-// }
-
-// fn move_tile(ref world: IWorldDispatcher, game_id: u32, tile_id: u32, new_x: u32, new_y: u32) {
-//     let mut position = get!(world, (game_id, tile_id), (Position));
-//     set!(
-//         world,
-//         (
-//             Position {
-//                 game_id,
-//                 tile_id,
-//                 x: new_x,
-//                 y: new_y,
-//                 z: position.z,
-//             }
-//         )
-//     );
-// }
-
 
 fn get_spawn_tile_location_and_value(world: @IWorldDispatcher, player: ContractAddress, game_id: u32, tile_count: u32, height: u32, width: u32) -> Option<(u32, u32, u32)> {
     let empty_positions = find_empty_positions(world, player, game_id, tile_count, height, width);
