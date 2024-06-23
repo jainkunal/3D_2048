@@ -31,7 +31,7 @@ export const UIContainer = () => {
                     actions.create_game({ account });
                 }}
             >
-                Create Game
+                New Game
             </Button>
             <div className="h-12 w-48 bg-white flex justify-center items-center border-2">
                 Game ID: {player?.last_game_id}
