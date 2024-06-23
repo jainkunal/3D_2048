@@ -19,10 +19,10 @@ export const useElementStore = create<Store>((set) => ({
   //         },
   //       };
   //     }),
-  update_tiles: (tile: any) =>
+  update_tiles: (tiles: any) =>
     set((state) => {
       return {
-        tiles: [...state.tiles, tile],
+        tiles,
       };
     }),
 }));

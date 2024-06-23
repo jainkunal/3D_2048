@@ -11,12 +11,14 @@ export const Tile = ({ position }: any) => {
     return (
         <>
             <mesh
-                receiveShadow
-                position={[position.x, -MAP_SCALE, position.y]}
+                // receiveShadow
+                position={[position.x, -position.z, position.y]}
                 geometry={squareGeometry}
                 material={
                     new THREE.MeshPhongMaterial({
                         color: "lightgrey",
+                        transparent: true,
+                        opacity: 0.1
                     })
                 }
             ></mesh>
@@ -28,7 +30,7 @@ export const Tile = ({ position }: any) => {
                         linewidth: 1,
                     })
                 }
-                position={[position.x, -MAP_SCALE + 0.01, position.y]}
+                position={[position.x, -position.z + 0.01, position.y]}
             />
         </>
     );

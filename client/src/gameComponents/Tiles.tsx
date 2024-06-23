@@ -1,9 +1,26 @@
 import { useDojo } from "@/dojo/useDojo";
-import { Has, HasValue, defineSystem } from "@dojoengine/recs";
-import { TileComponent } from "./Tile";
-import { useEffect, useState } from "react";
+import { HasValue, defineSystem } from "@dojoengine/recs";
+import { TileComponent } from "./TileComponent";
+import { useEffect } from "react";
 import { useElementStore } from "@/store";
-import { useComponentValue, useEntityQuery } from "@dojoengine/react";
+import { gql, useApolloClient } from "@apollo/client";
+
+const GET_TILES = gql`
+  query {
+    tileModels {
+      edges {
+        node {
+          player
+          game_id
+          x
+          y
+          z
+          value
+        }
+      }
+    }
+  }
+`
 
 export const Tiles = (props: any) => {
     const {
@@ -13,28 +30,35 @@ export const Tiles = (props: any) => {
             world,
         },
     } = useDojo();
+    const apolloClient = useApolloClient();
 
-    // const tiles = useElementStore((state) => state.tiles);
-    // const update_tiles = useElementStore((state) => state.update_tiles);
+    const tiles = useElementStore((state) => state.tiles);
+    const update_tiles = useElementStore((state) => state.update_tiles);
 
-    // useEffect(() => {
-    //     console.log(account.address);
-    //     console.log(BigInt(account.address));
-    //     // defineSystem(world, [HasValue(Tile, { game_id: 1 })], ({ value: [newValue] }) => {
-    //     //     console.log(newValue);
-    //     //     update_tiles(newValue);
-    //     // });
+    useEffect(() => {
+        // console.log(account.address);
+        // console.log(BigInt(account.address));
+        defineSystem(world, [HasValue(Tile, { game_id: 1 })], async ({ value: [newValue] }) => {
+            const { data } = await apolloClient.query({
+                query: GET_TILES,
+            });
 
-    // }, []);
-    const v = useEntityQuery([HasValue(Tile, { game_id: 1 })], { updateOnValueChange: false })
-    console.log(v);
+            const entities = [];
+            for (const e of data.tileModels.edges) {
+                entities.push(e.node);
+            }
+            update_tiles(entities);
+        });
+
+    }, []);
+
+    // const v = useEntityQuery([HasValue(Tile, { game_id: 1 })], { updateOnValueChange: false })
 
     return (
         <>
             {
-                // Get all players
-                Object.values(v).map((tileId: any) => {
-                    return <TileComponent key={tileId} tileId={tileId} />;
+                Object.values(tiles).map((tile: any) => {
+                    return <TileComponent key={tile.x + "-" + tile.y + "-" + tile.z} tile={tile} />;
                 })
             }
         </>
