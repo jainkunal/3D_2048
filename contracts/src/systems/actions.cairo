@@ -78,6 +78,7 @@ mod actions {
             // Retrieve the player's game.
             let mut game = get!(world, (player, game_id), (Game));
             let mut tile_count = game.tile_count;
+            let mut score = game.score;
 
 
             // Code to process direction left
@@ -150,6 +151,7 @@ mod actions {
                                                 }
                                             )
                                         );
+                                        score += left_tile.value * 2;
 
                                         let last_index_tile = get!(world, (player, game_id, tile_count - 1), (Tile));
                                         set!(
@@ -278,6 +280,7 @@ mod actions {
                                                 }
                                             )
                                         );
+                                        score += right_tile.value * 2;
                 
                                         let last_index_tile = get!(world, (player, game_id, tile_count - 1), (Tile));
                                         set!(
@@ -412,6 +415,7 @@ mod actions {
                                                 }
                                             )
                                         );
+                                        score += above_tile.value * 2;
                     
                                         let last_index_tile = get!(world, (player, game_id, tile_count - 1), (Tile));
                                         set!(
@@ -539,6 +543,7 @@ mod actions {
                                                 }
                                             )
                                         );
+                                        score += bottom_tile.value * 2;
                 
                                         let last_index_tile = get!(world, (player, game_id, tile_count - 1), (Tile));
                                         set!(
@@ -631,7 +636,7 @@ mod actions {
                         width: game.width,
                         height: game.height,
                         tile_count: tile_count + 1,
-                        score: game.score,
+                        score,
                         state: game.state, // 1: Playing, 2: Game Over, 3: Won
                     }
                 ))

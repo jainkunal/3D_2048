@@ -9,13 +9,18 @@ export const UIContainer = () => {
         account: { account },
         setup: {
             client: { actions },
-            clientComponents: { Player },
+            clientComponents: { Player, Game },
         },
     } = useDojo();
 
-    const player = useComponentValue(
-        Player,
-        getEntityIdFromKeys([BigInt(account.address)]) as Entity
+    // const player = useComponentValue(
+    //     Player,
+    //     getEntityIdFromKeys([BigInt(account.address)]) as Entity
+    // );
+
+    const game = useComponentValue(
+        Game,
+        getEntityIdFromKeys([BigInt(account.address), BigInt(1)]) as Entity
     );
 
     return (
@@ -33,7 +38,7 @@ export const UIContainer = () => {
                 Left
             </Button>
             <div className="h-12 w-48 bg-white flex justify-center items-center border-2">
-                Game Won: {player?.games_won}
+                Score: {game?.score}
             </div>
         </div>
     );
