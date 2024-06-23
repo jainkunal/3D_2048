@@ -31,12 +31,6 @@ export const UIContainer = () => {
             >
                 Create Game
             </Button>
-            <Button
-                variant={"default"}
-                onClick={() => actions.move({ account, gameId: 1, direction: 1 })}
-            >
-                Left
-            </Button>
             <div className="h-12 w-48 bg-white flex justify-center items-center border-2">
                 Score: {game?.score}
             </div>
