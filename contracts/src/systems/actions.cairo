@@ -213,7 +213,138 @@ mod actions {
                         y += 1;
                     }
                 },
-                Direction::Right => {},
+                Direction::Right => {
+                    let mut y: u32 = 0;
+                    loop {
+                        if y >= game.height {
+                            break;
+                        }
+                
+                        let mut merged = false;
+                
+                        // Move tiles to the right
+                        let mut x: u32 = game.width - 1;
+                        loop {
+                            if let Option::Some(tile_id) = get_tile_at(@world, player, game_id, tile_count, x, y) {
+                                let mut current_x = x;
+                                let tile = get!(world, (player, game_id, tile_id), (Tile));
+                                while current_x < game.width - 1 && get_tile_at(@world, player, game_id, tile_count, current_x + 1, y).is_none() {
+                                    set!(
+                                        world,
+                                        (
+                                            Tile {
+                                                player,
+                                                game_id,
+                                                tile_id,
+                                                x: current_x + 1,
+                                                y,
+                                                z: tile.z,
+                                                value: tile.value,
+                                            }
+                                        )
+                                    );
+                                    current_x += 1;
+                                }
+                            }
+                            if x == 0 {
+                                break;
+                            }
+                            x -= 1;
+                        };
+                
+                        // Merge Tiles Logic
+                        let mut x: u32 = game.width - 2;
+                        loop {
+                            if let Option::Some(current_tile_id) = get_tile_at(@world, player, game_id, tile_count, x, y) {
+                                if let Option::Some(right_tile_id) = get_tile_at(@world, player, game_id, tile_count, x + 1, y) {
+                                    let current_tile = get!(world, (player, game_id, current_tile_id), (Tile));
+                                    let right_tile = get!(world, (player, game_id, right_tile_id), (Tile));
+                                    let current_value = current_tile.value;
+                                    let right_value = right_tile.value;
+                
+                                    if current_value == right_value && !merged {
+                                        // Merge Tiles
+                                        set!(
+                                            world,
+                                            (
+                                                Tile {
+                                                    player,
+                                                    game_id,
+                                                    tile_id: right_tile_id,
+                                                    x: right_tile.x,
+                                                    y: right_tile.y,
+                                                    z: right_tile.z,
+                                                    value: right_tile.value * 2
+                                                }
+                                            )
+                                        );
+                
+                                        let last_index_tile = get!(world, (player, game_id, tile_count - 1), (Tile));
+                                        set!(
+                                            world,
+                                            (
+                                                Tile {
+                                                    player,
+                                                    game_id,
+                                                    tile_id: current_tile_id,
+                                                    x: last_index_tile.x,
+                                                    y: last_index_tile.y,
+                                                    z: last_index_tile.z,
+                                                    value: last_index_tile.value
+                                                }
+                                            )
+                                        );
+                                        delete!(world, (last_index_tile));
+                                        tile_count -= 1;
+                
+                                        merged = true;
+                
+                                        if x > 0 {
+                                            let mut xx: u32 = x - 1;
+                                            loop {
+                                                // Move Tile
+                                                if let Option::Some(tile_id) = get_tile_at(@world, player, game_id, tile_count, xx, y) {
+                                                    let tile = get!(world, (player, game_id, tile_id), (Tile));
+                                                    set!(
+                                                        world,
+                                                        (
+                                                            Tile {
+                                                                player,
+                                                                game_id,
+                                                                tile_id,
+                                                                x: xx + 1,
+                                                                y,
+                                                                z: tile.z,
+                                                                value: tile.value,
+                                                            }
+                                                        )
+                                                    );
+                                                }
+                                                if xx == 0 {
+                                                    break;
+                                                }
+                                                xx -= 1;
+                                            };
+                                        }
+                                    } else {
+                                        merged = false;
+                                    }
+                                } else {
+                                    merged = false;
+                                }
+                            } else {
+                                merged = false;
+                            }
+
+                            if x == 0 {
+                                break;
+                            }
+                            x -= 1;
+                        };
+                
+                        y += 1;
+                    }
+                },
                 Direction::Up => {},
                 Direction::Down => {},
                 Direction::Back => {},
