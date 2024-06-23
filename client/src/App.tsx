@@ -4,37 +4,47 @@ import { UIContainer } from "./gameComponents/UIContainer";
 import { useEffect } from "react";
 import { useDojo } from "./dojo/useDojo";
 import { Direction } from "./utils";
+import { useComponentValue } from "@dojoengine/react";
+import { Entity } from "@dojoengine/recs";
+import { getEntityIdFromKeys } from "@dojoengine/utils";
 
 function App() {
     const {
         account: { account },
         setup: {
+            clientComponents: { Player },
             client: { actions },
         },
     } = useDojo();
 
+    const player = useComponentValue(
+        Player,
+        getEntityIdFromKeys([BigInt(account.address)]) as Entity
+    );
+
     useEffect(() => {
         const handleKeyDown = (event) => {
+            const gameId = player?.last_game_id ?? 1;
             switch (event.key) {
                 case 'ArrowUp':
-                    actions.move({ account, gameId: 1, direction: Direction.Up });
+                    actions.move({ account, gameId, direction: Direction.Up });
                     break;
                 case 'ArrowDown':
-                    actions.move({ account, gameId: 1, direction: Direction.Down });
+                    actions.move({ account, gameId, direction: Direction.Down });
                     break;
                 case 'ArrowLeft':
-                    actions.move({ account, gameId: 1, direction: Direction.Left });
+                    actions.move({ account, gameId, direction: Direction.Left });
                     break;
                 case 'ArrowRight':
-                    actions.move({ account, gameId: 1, direction: Direction.Right });
+                    actions.move({ account, gameId, direction: Direction.Right });
                     break;
                 case 'f':
                 case 'F':
-                    actions.move({ account, gameId: 1, direction: Direction.Front });
+                    actions.move({ account, gameId, direction: Direction.Front });
                     break;
                 case 'b':
                 case "B":
-                    actions.move({ account, gameId: 1, direction: Direction.Back });
+                    actions.move({ account, gameId, direction: Direction.Back });
                     break;
                 default:
                     break;
@@ -46,7 +56,7 @@ function App() {
         return () => {
             window.removeEventListener("keydown", handleKeyDown);
         }
-    }, [actions]);
+    }, [account, player?.last_game_id, account.address, actions]);
 
     return (
         <div className="relative w-screen h-screen flex flex-col">

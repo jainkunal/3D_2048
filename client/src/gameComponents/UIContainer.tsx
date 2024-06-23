@@ -13,24 +13,29 @@ export const UIContainer = () => {
         },
     } = useDojo();
 
-    // const player = useComponentValue(
-    //     Player,
-    //     getEntityIdFromKeys([BigInt(account.address)]) as Entity
-    // );
+    const player = useComponentValue(
+        Player,
+        getEntityIdFromKeys([BigInt(account.address)]) as Entity
+    );
 
     const game = useComponentValue(
         Game,
-        getEntityIdFromKeys([BigInt(account.address), BigInt(1)]) as Entity
+        getEntityIdFromKeys([BigInt(account.address), BigInt(player ? player?.last_game_id : 1)]) as Entity
     );
 
     return (
         <div className="flex space-x-3 justify-between p-2 flex-wrap">
             <Button
                 variant={"default"}
-                onClick={() => actions.create_game({ account })}
+                onClick={async () => {
+                    actions.create_game({ account });
+                }}
             >
                 Create Game
             </Button>
+            <div className="h-12 w-48 bg-white flex justify-center items-center border-2">
+                Game ID: {player?.last_game_id}
+            </div>
             <div className="h-12 w-48 bg-white flex justify-center items-center border-2">
                 Score: {game?.score}
             </div>

@@ -41,15 +41,23 @@ mod actions {
 
             set!(
                 world,
-                Game {
-                    player,
-                    game_id: player_entity.last_game_id + 1,
-                    game_mode: GameMode::Single,
-                    box_size: 4,
-                    tile_count: 1,
-                    score: 0,
-                    state: 1
-                },
+                (
+                    Player {
+                        address: player,
+                        last_game_id: game_id,
+                        games_won: player_entity.games_won,
+                        games_lost: player_entity.games_lost,
+                    },
+                    Game {
+                        player,
+                        game_id: game_id,
+                        game_mode: GameMode::Single,
+                        box_size: 4,
+                        tile_count: 1,
+                        score: 0,
+                        state: 1
+                    },
+                ),
             );
 
             let r = get_spawn_tile_location_and_value(@world, player, game_id, 0, 4);

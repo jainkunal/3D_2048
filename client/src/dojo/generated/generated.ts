@@ -14,11 +14,13 @@ export async function setupWorld(provider: DojoProvider) {
   function actions() {
     const create_game = async ({ account }: { account: AccountInterface }) => {
       try {
-        return await provider.execute(account, {
+        const { transaction_hash: txHash } = await provider.execute(account, {
           contractName: "actions",
           entrypoint: "create_game",
           calldata: [],
         });
+        await provider.provider.waitForTransaction(txHash);
+        return txHash;
       } catch (error) {
         console.error("Error executing spawn:", error);
         throw error;
