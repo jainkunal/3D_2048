@@ -45,15 +45,14 @@ mod actions {
                     player,
                     game_id: player_entity.last_game_id + 1,
                     game_mode: GameMode::Single,
-                    width: 4,
-                    height: 4,
+                    box_size: 4,
                     tile_count: 1,
                     score: 0,
                     state: 1
                 },
             );
 
-            let r = get_spawn_tile_location_and_value(@world, player, game_id, 0, 4, 4);
+            let r = get_spawn_tile_location_and_value(@world, player, game_id, 0, 4);
             let (spawn_x, spawn_y, spawn_value) = r.unwrap();
             set!(world, (
                 Tile {
@@ -86,7 +85,7 @@ mod actions {
                 Direction::Left => {
                     let mut y: usize = 0;
                     loop {
-                        if (y >= game.height) {
+                        if (y >= game.box_size) {
                             break;
                         }
 
@@ -94,7 +93,7 @@ mod actions {
 
                         let mut x: usize = 0;
                         loop {
-                            if (x >= game.width) {
+                            if (x >= game.box_size) {
                                 break;
                             }
                             if let Option::Some(tile_id) = get_tile_at(@world, player, game_id, tile_count, x, y) {
@@ -125,7 +124,7 @@ mod actions {
                         // Merge Tiles Logic
                         let mut x: usize = 1;
                         loop {
-                            if (x >= game.width) {
+                            if (x >= game.box_size) {
                                 break;
                             }
                             if let Option::Some(current_tile_id) = get_tile_at(@world, player, game_id, tile_count, x, y) {
@@ -176,7 +175,7 @@ mod actions {
 
                                         let mut xx: usize = x + 1;
                                         loop {
-                                            if xx >= game.width {
+                                            if xx >= game.box_size {
                                                 break;
                                             }
                                             // Move Tile
@@ -218,19 +217,19 @@ mod actions {
                 Direction::Right => {
                     let mut y: u32 = 0;
                     loop {
-                        if y >= game.height {
+                        if y >= game.box_size {
                             break;
                         }
                 
                         let mut merged = false;
                 
                         // Move tiles to the right
-                        let mut x: u32 = game.width - 1;
+                        let mut x: u32 = game.box_size - 1;
                         loop {
                             if let Option::Some(tile_id) = get_tile_at(@world, player, game_id, tile_count, x, y) {
                                 let mut current_x = x;
                                 let tile = get!(world, (player, game_id, tile_id), (Tile));
-                                while current_x < game.width - 1 && get_tile_at(@world, player, game_id, tile_count, current_x + 1, y).is_none() {
+                                while current_x < game.box_size - 1 && get_tile_at(@world, player, game_id, tile_count, current_x + 1, y).is_none() {
                                     set!(
                                         world,
                                         (
@@ -255,7 +254,7 @@ mod actions {
                         };
                 
                         // Merge Tiles Logic
-                        let mut x: u32 = game.width - 2;
+                        let mut x: u32 = game.box_size - 2;
                         loop {
                             if let Option::Some(current_tile_id) = get_tile_at(@world, player, game_id, tile_count, x, y) {
                                 if let Option::Some(right_tile_id) = get_tile_at(@world, player, game_id, tile_count, x + 1, y) {
@@ -351,7 +350,7 @@ mod actions {
                 Direction::Up => {
                     let mut x: u32 = 0;
                     loop {
-                        if x >= game.width {
+                        if x >= game.box_size {
                             break;
                         }
                     
@@ -359,7 +358,7 @@ mod actions {
                     
                         let mut y: u32 = 0;
                         loop {
-                            if y >= game.height {
+                            if y >= game.box_size {
                                 break;
                             }
                             if let Option::Some(tile_id) = get_tile_at(@world, player, game_id, tile_count, x, y) {
@@ -389,7 +388,7 @@ mod actions {
                         // Merge Tiles Logic
                         let mut y: u32 = 1;
                         loop {
-                            if y >= game.height {
+                            if y >= game.box_size {
                                 break;
                             }
                             if let Option::Some(current_tile_id) = get_tile_at(@world, player, game_id, tile_count, x, y) {
@@ -439,7 +438,7 @@ mod actions {
                     
                                         let mut yy: u32 = y + 1;
                                         loop {
-                                            if yy >= game.height {
+                                            if yy >= game.box_size {
                                                 break;
                                             }
                                             // Move Tile
@@ -481,19 +480,19 @@ mod actions {
                 Direction::Down => {
                     let mut x: u32 = 0;
                     loop {
-                        if x >= game.width {
+                        if x >= game.box_size {
                             break;
                         }
                 
                         let mut merged = false;
                 
                         // Move tiles downward
-                        let mut y: u32 = game.height - 1;
+                        let mut y: u32 = game.box_size - 1;
                         loop {
                             if let Option::Some(tile_id) = get_tile_at(@world, player, game_id, tile_count, x, y) {
                                 let mut current_y = y;
                                 let tile = get!(world, (player, game_id, tile_id), (Tile));
-                                while current_y < game.height - 1 && get_tile_at(@world, player, game_id, tile_count, x, current_y + 1).is_none() {
+                                while current_y < game.box_size - 1 && get_tile_at(@world, player, game_id, tile_count, x, current_y + 1).is_none() {
                                     set!(
                                         world,
                                         (
@@ -518,7 +517,7 @@ mod actions {
                         };
                 
                         // Merge Tiles Logic
-                        let mut y: u32 = game.height - 2;
+                        let mut y: u32 = game.box_size - 2;
                         loop {
                             if let Option::Some(current_tile_id) = get_tile_at(@world, player, game_id, tile_count, x, y) {
                                 if let Option::Some(bottom_tile_id) = get_tile_at(@world, player, game_id, tile_count, x, y + 1) {
@@ -616,7 +615,7 @@ mod actions {
                 Direction::None => {},
             }
 
-            let r = get_spawn_tile_location_and_value(@world, player, game_id, tile_count, game.height, game.width);
+            let r = get_spawn_tile_location_and_value(@world, player, game_id, tile_count, game.box_size);
             if r.is_some() {
                 let (spawn_x, spawn_y, spawn_value) = r.unwrap();
                 set!(world, (
@@ -633,8 +632,7 @@ mod actions {
                         player,
                         game_id,
                         game_mode: game.game_mode,
-                        width: game.width,
-                        height: game.height,
+                        box_size: game.box_size,
                         tile_count: tile_count + 1,
                         score,
                         state: game.state, // 1: Playing, 2: Game Over, 3: Won
@@ -665,8 +663,8 @@ fn get_tile_at(world: @IWorldDispatcher, player: ContractAddress, game_id: u32, 
     result
 }
 
-fn get_spawn_tile_location_and_value(world: @IWorldDispatcher, player: ContractAddress, game_id: u32, tile_count: u32, height: u32, width: u32) -> Option<(u32, u32, u32)> {
-    let empty_positions = find_empty_positions(world, player, game_id, tile_count, height, width);
+fn get_spawn_tile_location_and_value(world: @IWorldDispatcher, player: ContractAddress, game_id: u32, tile_count: u32, box_size: u32) -> Option<(u32, u32, u32)> {
+    let empty_positions = find_empty_positions(world, player, game_id, tile_count, box_size);
 
     if empty_positions.len() == 0 {
         return Option::None;
@@ -683,17 +681,17 @@ fn get_spawn_tile_location_and_value(world: @IWorldDispatcher, player: ContractA
 }
 
 
-fn find_empty_positions(world: @IWorldDispatcher, player: ContractAddress, game_id: u32, tile_count: u32, height: u32, width: u32) -> Array<(u32, u32)> {
+fn find_empty_positions(world: @IWorldDispatcher, player: ContractAddress, game_id: u32, tile_count: u32, box_size: u32) -> Array<(u32, u32)> {
     let mut empty_positions = ArrayTrait::new();
     
     let mut y = 0;
     loop {
-        if y >= height {
+        if y >= box_size {
             break;
         }
         let mut x = 0;
         loop {
-            if x >= width {
+            if x >= box_size {
                 break;
             }
             if get_tile_at(world, player, game_id, tile_count, x, y).is_none() {

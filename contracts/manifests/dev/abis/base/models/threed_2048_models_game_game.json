@@ -353,11 +353,7 @@
         "type": "threed_2048::models::game::GameMode"
       },
       {
-        "name": "width",
-        "type": "core::integer::u32"
-      },
-      {
-        "name": "height",
+        "name": "box_size",
         "type": "core::integer::u32"
       },
       {

@@ -1,6 +1,6 @@
 kind = "DojoModel"
-class_hash = "0x44d225e79ccf70dd142920fd7bbbbd8afc88bf5709efc68127883e118b3a7ae"
-original_class_hash = "0x44d225e79ccf70dd142920fd7bbbbd8afc88bf5709efc68127883e118b3a7ae"
+class_hash = "0x2cb5c2e63432bd1e828367a19c74ce51a4c5ab740f19e1241098615f30e2ff8"
+original_class_hash = "0x2cb5c2e63432bd1e828367a19c74ce51a4c5ab740f19e1241098615f30e2ff8"
 abi = "manifests/dev/abis/base/models/threed_2048_models_game_game.json"
 name = "threed_2048::models::game::game"
 
@@ -20,12 +20,7 @@ type = "GameMode"
 key = false
 
 [[members]]
-name = "width"
-type = "u32"
-key = false
-
-[[members]]
-name = "height"
+name = "box_size"
 type = "u32"
 key = false
 
