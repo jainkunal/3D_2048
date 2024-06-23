@@ -1,4 +1,4 @@
-import { Tile } from "./Tile";
+import { Tile } from "./TileFacade";
 import { MAP_SCALE } from "@/config";
 
 export const TileGrid = ({ rows, cols }: any) => {

@@ -28,9 +28,9 @@ base_class_hash = "0x22f3e55b61d86c2ac5239fa3b3b8761f26b9a5c0b5f61ddbd5d756ced49
 abi = "manifests/dev/abis/deployments/contracts/threed_2048_systems_actions_actions.json"
 reads = []
 writes = [
-    "Position",
-    "Moves",
-    "DirectionsAvailable",
+    "Game",
+    "Tile",
+    "Player",
 ]
 computed = []
 init_calldata = []

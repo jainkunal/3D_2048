@@ -1230,9 +1230,9 @@
       ],
       "reads": [],
       "writes": [
-        "Position",
-        "Moves",
-        "DirectionsAvailable"
+        "Game",
+        "Tile",
+        "Player"
       ],
       "computed": [],
       "init_calldata": [],

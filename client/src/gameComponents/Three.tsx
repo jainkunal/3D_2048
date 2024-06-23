@@ -2,7 +2,7 @@ import { Canvas, useThree } from "@react-three/fiber";
 
 import { Stage, OrbitControls } from "@react-three/drei";
 import { TileGrid } from "./TileGrid";
-import { Players } from "./Players";
+import { Tiles } from "./Tiles";
 import { useEffect } from "react";
 import { Vector3 } from "three";
 
@@ -42,8 +42,8 @@ export const ThreeGrid = () => {
                     shadow-mapSize-width={2048}
                     shadow-mapSize-height={2048}
                 />
-                <TileGrid rows={30} cols={30} />
-                <Players />
+                <TileGrid rows={4} cols={4} />
+                <Tiles />
             </Stage>
         </Canvas>
     );

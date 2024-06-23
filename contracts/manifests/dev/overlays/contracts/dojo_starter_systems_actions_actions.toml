@@ -1,4 +1,4 @@
 name = "threed_2048::systems::actions::actions"
 reads = []
-writes = ["Position", "Moves", "DirectionsAvailable"]
+writes = ["Game", "Tile", "Player"]
 init_calldata = []
