@@ -7,11 +7,12 @@ import { gql, useApolloClient } from "@apollo/client";
 
 const GET_TILES = gql`
   query {
-    tileModels {
+    tileModels(limit:100) {
       edges {
         node {
           player
           game_id
+          tile_id
           x
           y
           z

@@ -8,11 +8,10 @@ struct Tile {
     #[key]
     game_id: u32,
     #[key]
+    tile_id: u32,
     x: u32,
-    #[key]
     y: u32,
     z: u32,
-    is_alive: bool,
     value: u32
 }
 

@@ -1,6 +1,6 @@
 kind = "DojoModel"
-class_hash = "0x49b4dc8b6b40b4f8a4d441677e79a35817d5d490f25f5e771f6c6785589ab29"
-original_class_hash = "0x49b4dc8b6b40b4f8a4d441677e79a35817d5d490f25f5e771f6c6785589ab29"
+class_hash = "0x64f40affb2d321f16b1a4b7b272bca9830547dbff19d13f9c7349b2db62a87e"
+original_class_hash = "0x64f40affb2d321f16b1a4b7b272bca9830547dbff19d13f9c7349b2db62a87e"
 abi = "manifests/dev/abis/base/models/threed_2048_models_entity_tile.json"
 name = "threed_2048::models::entity::tile"
 
@@ -15,23 +15,23 @@ type = "u32"
 key = true
 
 [[members]]
+name = "tile_id"
+type = "u32"
+key = true
+
+[[members]]
 name = "x"
-type = "u32"
-key = true
-
-[[members]]
-name = "y"
-type = "u32"
-key = true
-
-[[members]]
-name = "z"
 type = "u32"
 key = false
 
 [[members]]
-name = "is_alive"
-type = "bool"
+name = "y"
+type = "u32"
+key = false
+
+[[members]]
+name = "z"
+type = "u32"
 key = false
 
 [[members]]

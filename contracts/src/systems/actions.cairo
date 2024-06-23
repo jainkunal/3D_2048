@@ -53,16 +53,16 @@ mod actions {
                 },
             );
 
-            let r = get_spawn_tile_location_and_value(@world, player, game_id, 4, 4);
+            let r = get_spawn_tile_location_and_value(@world, player, game_id, 0, 4, 4);
             let (spawn_x, spawn_y, spawn_value) = r.unwrap();
             set!(world, (
                 Tile {
                     player,
                     game_id,
+                    tile_id: 0,
                     x: spawn_x,
                     y: spawn_y,
                     z: 0,
-                    is_alive: true,
                     value: spawn_value
                 },
             ));
@@ -105,9 +105,10 @@ mod actions {
                             if (x >= game.width) {
                                 break;
                             }
-                            if let Option::Some(tile) = get_tile_at(@world, player, game_id, x, y) {
+                            if let Option::Some(tile_id) = get_tile_at(@world, player, game_id, tile_count, x, y) {
                                 let mut current_x = x;
-                                while current_x > 0 && get_tile_at(@world, player, game_id, current_x - 1, y).is_none() {
+                                let tile = get!(world, (player, game_id, tile_id), (Tile));
+                                while current_x > 0 && get_tile_at(@world, player, game_id, tile_count, current_x - 1, y).is_none() {
                                     // move_tile(ref world, game_id, tile_id, current_x - 1, y);
                                     set!(
                                         world,
@@ -115,15 +116,14 @@ mod actions {
                                             Tile {
                                                 player,
                                                 game_id,
+                                                tile_id,
                                                 x: current_x - 1,
                                                 y: y,
                                                 z: tile.z,
-                                                is_alive: tile.is_alive,
                                                 value: tile.value,
                                             }
                                         )
                                     );
-                                    delete!(world, (tile));
                                     current_x -= 1;
                                 }
                             }
@@ -136,8 +136,10 @@ mod actions {
                             if (x >= game.width) {
                                 break;
                             }
-                            if let Option::Some(current_tile) = get_tile_at(@world, player, game_id, x, y) {
-                                if let Option::Some(left_tile) = get_tile_at(@world, player, game_id, x - 1, y) {
+                            if let Option::Some(current_tile_id) = get_tile_at(@world, player, game_id, tile_count, x, y) {
+                                if let Option::Some(left_tile_id) = get_tile_at(@world, player, game_id, tile_count, x - 1, y) {
+                                    let current_tile = get!(world, (player, game_id, current_tile_id), (Tile));
+                                    let left_tile = get!(world, (player, game_id, left_tile_id), (Tile));
                                     let current_value = current_tile.value;
                                     let left_value = left_tile.value;
 
@@ -149,15 +151,31 @@ mod actions {
                                                 Tile {
                                                     player,
                                                     game_id,
-                                                    x: x - 1,
-                                                    y,
+                                                    tile_id: left_tile_id,
+                                                    x: left_tile.x,
+                                                    y: left_tile.y,
                                                     z: left_tile.z,
-                                                    is_alive: true,
                                                     value: left_tile.value * 2
                                                 }
                                             )
                                         );
-                                        delete!(world, (current_tile));
+
+                                        let last_index_tile = get!(world, (player, game_id, tile_count - 1), (Tile));
+                                        set!(
+                                            world,
+                                            (
+                                                Tile {
+                                                    player,
+                                                    game_id,
+                                                    tile_id: current_tile_id,
+                                                    x: last_index_tile.x,
+                                                    y: last_index_tile.y,
+                                                    z: last_index_tile.z,
+                                                    value: last_index_tile.value
+                                                }
+                                            )
+                                        );
+                                        delete!(world, (last_index_tile));
                                         tile_count -= 1;
 
                                         // merged[x - 1] = true;
@@ -169,22 +187,22 @@ mod actions {
                                                 break;
                                             }
                                             // Move Tile
-                                            if let Option::Some(tile) = get_tile_at(@world, player, game_id, xx, y) {
+                                            if let Option::Some(tile_id) = get_tile_at(@world, player, game_id, tile_count, xx, y) {
+                                                let tile = get!(world, (player, game_id, tile_id), (Tile));
                                                 set!(
                                                     world,
                                                     (
                                                         Tile {
                                                             player,
                                                             game_id,
+                                                            tile_id,
                                                             x: xx - 1,
                                                             y: y,
                                                             z: tile.z,
-                                                            is_alive: tile.is_alive,
                                                             value: tile.value,
                                                         }
                                                     )
                                                 );
-                                                delete!(world, (tile));
                                             }
                                             xx += 1;
                                         };
@@ -212,17 +230,17 @@ mod actions {
                 Direction::None => {},
             }
 
-            let r = get_spawn_tile_location_and_value(@world, player, game_id, game.height, game.width);
+            let r = get_spawn_tile_location_and_value(@world, player, game_id, tile_count, game.height, game.width);
             if r.is_some() {
                 let (spawn_x, spawn_y, spawn_value) = r.unwrap();
                 set!(world, (
                     Tile {
                         player,
                         game_id,
+                        tile_id: tile_count,
                         x: spawn_x,
                         y: spawn_y,
                         z: 0,
-                        is_alive: true,
                         value: spawn_value
                     },
                     Game {
@@ -246,13 +264,19 @@ mod actions {
     }
 }
 
-fn get_tile_at(world: @IWorldDispatcher, player: ContractAddress, game_id: u32, x: u32, y: u32) -> Option<Tile> {
-    let result = get!(*world, (player, game_id, x, y), (Tile));
-    if result.is_alive {
-        Option::Some(result)
-    } else {
-        Option::None
-    }
+fn get_tile_at(world: @IWorldDispatcher, player: ContractAddress, game_id: u32, tile_count: u32, x: u32, y: u32) -> Option<u32> {
+    let mut i: usize = 0;
+    let result = loop {
+        if (i >= tile_count) {
+            break Option::None;
+        }
+        let tile = get!(*world, (player, game_id, i), (Tile));
+        if tile.x == x && tile.y == y {
+            break Option::Some(i);
+        }
+        i += 1;
+    };
+    result
 }
 
 // fn process_row(ref world: IWorldDispatcher, game_id: u32, tile_count: u32, y: u32, width: u32) {
@@ -301,8 +325,8 @@ fn get_tile_at(world: @IWorldDispatcher, player: ContractAddress, game_id: u32, 
 // }
 
 
-fn get_spawn_tile_location_and_value(world: @IWorldDispatcher, player: ContractAddress, game_id: u32, height: u32, width: u32) -> Option<(u32, u32, u32)> {
-    let empty_positions = find_empty_positions(world, player, game_id, height, width);
+fn get_spawn_tile_location_and_value(world: @IWorldDispatcher, player: ContractAddress, game_id: u32, tile_count: u32, height: u32, width: u32) -> Option<(u32, u32, u32)> {
+    let empty_positions = find_empty_positions(world, player, game_id, tile_count, height, width);
 
     if empty_positions.len() == 0 {
         return Option::None;
@@ -319,7 +343,7 @@ fn get_spawn_tile_location_and_value(world: @IWorldDispatcher, player: ContractA
 }
 
 
-fn find_empty_positions(world: @IWorldDispatcher, player: ContractAddress, game_id: u32, height: u32, width: u32) -> Array<(u32, u32)> {
+fn find_empty_positions(world: @IWorldDispatcher, player: ContractAddress, game_id: u32, tile_count: u32, height: u32, width: u32) -> Array<(u32, u32)> {
     let mut empty_positions = ArrayTrait::new();
     
     let mut y = 0;
@@ -332,7 +356,7 @@ fn find_empty_positions(world: @IWorldDispatcher, player: ContractAddress, game_
             if x >= width {
                 break;
             }
-            if get_tile_at(world, player, game_id, x, y).is_none() {
+            if get_tile_at(world, player, game_id, tile_count, x, y).is_none() {
                 empty_positions.append((x, y));
             }
             x += 1;

@@ -9,11 +9,11 @@ export function defineContractComponents(world: World) {
     Tile: (() => {
       return defineComponent(
         world,
-        { player: RecsType.BigInt, game_id: RecsType.Number, x: RecsType.Number, y: RecsType.Number, z: RecsType.Number, is_alive: RecsType.Boolean, value: RecsType.Number },
+        { player: RecsType.BigInt, game_id: RecsType.Number, tile_id: RecsType.Number, x: RecsType.Number, y: RecsType.Number, z: RecsType.Number, value: RecsType.Number },
         {
           metadata: {
             name: "Tile",
-            types: ["contractaddress","u32","u32","u32","u32","bool","u32"],
+            types: ["contractaddress","u32","u32","u32","u32","u32","u32"],
             customTypes: [],
           },
         }

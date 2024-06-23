@@ -33,7 +33,7 @@ export const TileComponent = (props: any) => {
         return new THREE.CanvasTexture(canvas);
     };
 
-    const textTexture = useMemo(() => createTextTexture(tile.value), []);
+    const textTexture = useMemo(() => createTextTexture(tile.value), [tile.value]);
 
     const innerMaterials = useMemo(() => {
         return new Array(6).fill(

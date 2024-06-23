@@ -22,8 +22,8 @@ name = "dojo::base::base"
 [[contracts]]
 kind = "DojoContract"
 address = "0x38d4ad3eb3c1fa648214f2cded353832b6ae8d051110e52fbf4451e4f5c3883"
-class_hash = "0xadda75090369fdc857f84028e7a5f52bba93130e5483749657aceec68afa42"
-original_class_hash = "0xadda75090369fdc857f84028e7a5f52bba93130e5483749657aceec68afa42"
+class_hash = "0x40810848371bc14c94ae0f24530f32d84f4a0dda6ef3db25231db0b74d02665"
+original_class_hash = "0x40810848371bc14c94ae0f24530f32d84f4a0dda6ef3db25231db0b74d02665"
 base_class_hash = "0x22f3e55b61d86c2ac5239fa3b3b8761f26b9a5c0b5f61ddbd5d756ced498b46"
 abi = "manifests/dev/abis/deployments/contracts/threed_2048_systems_actions_actions.json"
 reads = []
@@ -38,8 +38,8 @@ name = "threed_2048::systems::actions::actions"
 
 [[models]]
 kind = "DojoModel"
-class_hash = "0x49b4dc8b6b40b4f8a4d441677e79a35817d5d490f25f5e771f6c6785589ab29"
-original_class_hash = "0x49b4dc8b6b40b4f8a4d441677e79a35817d5d490f25f5e771f6c6785589ab29"
+class_hash = "0x64f40affb2d321f16b1a4b7b272bca9830547dbff19d13f9c7349b2db62a87e"
+original_class_hash = "0x64f40affb2d321f16b1a4b7b272bca9830547dbff19d13f9c7349b2db62a87e"
 abi = "manifests/dev/abis/deployments/models/threed_2048_models_entity_tile.json"
 name = "threed_2048::models::entity::tile"
 
@@ -54,23 +54,23 @@ type = "u32"
 key = true
 
 [[models.members]]
+name = "tile_id"
+type = "u32"
+key = true
+
+[[models.members]]
 name = "x"
-type = "u32"
-key = true
-
-[[models.members]]
-name = "y"
-type = "u32"
-key = true
-
-[[models.members]]
-name = "z"
 type = "u32"
 key = false
 
 [[models.members]]
-name = "is_alive"
-type = "bool"
+name = "y"
+type = "u32"
+key = false
+
+[[models.members]]
+name = "z"
+type = "u32"
 key = false
 
 [[models.members]]
